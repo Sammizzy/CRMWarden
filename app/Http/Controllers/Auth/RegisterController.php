@@ -13,7 +13,7 @@ class RegisterController extends Controller
     //show registration form
     public function showRegisterForm()
     {
-        return view('layouts.register');
+        return view('auth.registration');
     }
 
     //handle registration
