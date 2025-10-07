@@ -1,1 +1,4 @@
-Registration page
+<x-layout>
+    Registration page
+</x-layout>
+

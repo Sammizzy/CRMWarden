@@ -1,1 +1,5 @@
-Login page
+<x-layout>
+    Login page
+</x-layout>
+
+
