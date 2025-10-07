@@ -1,19 +1,33 @@
 <?php
 
+use App\Http\Controllers\Auth\HomeController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ProfileController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/registration', function () {
-    return view('registration');
-});
+// Import the controllers
 
-Route::get('/login', function () {
-    return view('login');
-});
 
-Route::get('/logout', function () {
-    return view('logout');
-});
+// Default Route
+Route::get('/', [LoginController::class, 'showLoginForm']);
+
+// Registration Routes
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
+
+// Login Routes
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+
+// Logout Route
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+
+// Home Route
+Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+
+// Profile Route
+Route::get('profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
+
+
