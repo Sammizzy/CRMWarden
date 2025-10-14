@@ -6,28 +6,24 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Account extends Authenticatable
 {
-    //update the created_at column name to match the database column
+    // Use 'registered' for created_at
     const CREATED_AT = 'registered';
-    //disable updated_at column as it doesnt exist in database
-    const UPDATED_AT = null;
+    const UPDATED_AT = null; // no updated_at column
 
-    //table name
+    // Table name
     protected $table = 'accounts';
 
-    //fields required for registration
+    // Fillable fields
     protected $fillable = [
         'username', 'email', 'password',
     ];
 
-    //fields are hidden from the user
+    // Hidden fields
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    //username is used for authentication
-    public function getAuthIdentifierName()
-{
-    return 'username';
-}
-
+    // Use default primary key (id) for authentication
+    // DO NOT override getAuthIdentifierName
+    // Laravel will use 'id' internally for sessions
 }

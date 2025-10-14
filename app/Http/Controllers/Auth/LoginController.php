@@ -8,41 +8,35 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    //show login form
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    //handle login
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required|string|max:50',
-            'password' => 'required|string',
+            'username' => ['required', 'string'],
+            'password' => ['required', 'string'],
         ]);
-        //Attempt to log in using provided credentials and the Auth Facade
-        if (Auth::attempt($credentials)) {
-            //Regenerate the session to prevent session fixation
-            $request->session()->regenerate();
 
-            //redirect to intended page
-            return redirect()->intended('/');
+        // Attempt login using username and password
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('home');
         }
-        //invalid login, gives error
+
         return back()->withErrors([
-            'username' => 'Invalid username or password.',
+            'username' => 'Invalid credentials.',
         ])->withInput();
     }
 
-    //handle logout
     public function logout(Request $request)
     {
         Auth::logout();
-        //invalidates session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect()->route('login');
     }
 }

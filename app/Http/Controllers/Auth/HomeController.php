@@ -13,6 +13,6 @@ class HomeController extends Controller
         //retrieve the authenticated account details
         $account = Auth::user();
         //return the home view with the account details
-        return view('layouts.home',['account'=>$account]);
+        return view('auth.home',['account'=>$account]);
     }
 }
