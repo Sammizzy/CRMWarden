@@ -1,5 +1,5 @@
 <x-layout>
-    
+
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -57,6 +57,7 @@
                     </div>
 
                     <!-- Quick stats / cards -->
+{{--                    these should be made in to buttons which take you to serpate pages containing expanded views of each--}}
                     <div class="row g-4">
                         <div class="col-md-4">
                             <div class="card p-3">
