@@ -14,7 +14,7 @@ class ProfileController extends Controller
         $account = Auth::user();
 
         //return the profile view with the authenticated user details
-        return view('layouts.profile', ['account'=>$account]);
+        return view('auth.profile', ['account'=>$account]);
 
     }
 }

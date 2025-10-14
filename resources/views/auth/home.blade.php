@@ -5,7 +5,7 @@
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>CRM Dashboard</title>
+                <title>WardenCRM Dashboard</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
                 <style>
                     body {
@@ -41,11 +41,11 @@
             <div class="d-flex">
                 <!-- Sidebar -->
                 <div class="sidebar flex-shrink-0">
-                    <h3 class="mb-4">MyCRM</h3>
+                    <h3 class="mb-4">WardenCRM</h3>
                     <nav>
-                        <a href="{{ route('home') }}">Dashboard</a>
                         <a href="{{ route('profile') }}">Profile</a>
                         <a href="{{ route('logout') }}">Logout</a>
+
                     </nav>
                 </div>
 
