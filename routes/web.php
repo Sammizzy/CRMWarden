@@ -32,7 +32,7 @@ Route::get('home', [HomeController::class, 'index'])->name('home')->middleware('
 // Profile Route
 Route::get('profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
 
-
+//lists resources
 Route::get('/lists', [ListsController::class, 'index'])->name('lists.index');
 Route::get('/lists/create', [ListsController::class, 'create'])->name('lists.create');
 Route::post('/lists', [ListsController::class, 'store'])->name('lists.store');
@@ -41,6 +41,7 @@ Route::get('/lists/{list}/edit', [ListsController::class, 'edit'])->name('lists.
 Route::put('/lists/{list}', [ListsController::class, 'update'])->name('lists.update');
 Route::delete('/lists/{list}', [ListsController::class, 'destroy'])->name('lists.destroy');
 
+//tasks resources
 Route::get('/tasks', [TasksController::class, 'index'])->name('tasks.index');
 Route::get('/tasks/create', [TasksController::class, 'create'])->name('tasks.create');
 Route::post('/tasks', [TasksController::class, 'store'])->name('tasks.store');
