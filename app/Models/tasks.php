@@ -8,4 +8,11 @@ class tasks extends Model
 {
     protected $table = 'lists';
     protected $fillable = ['name', 'category', 'priority', 'status', 'assigned_to'];
+
+    public function lists()
+    {
+        return $this->belongsTo(lists::class);
+    }
+
+
 }

@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('category');
-            $table->string('priority');
+            $table->string('description');
+            $table->integer('priority');
             $table->string('status');
-            $table->string('assigned_to');
+            $table->string('assigned_to') ->nullable();
             $table->timestamps();
         });
 

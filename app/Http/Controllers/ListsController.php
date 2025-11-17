@@ -23,6 +23,7 @@ class ListsController extends Controller
     }
 
     public function create()
+
     {
         $list = lists::all();
         return view ('lists.create');
@@ -32,9 +33,13 @@ class ListsController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
+            'category' => 'required',
+            'description' => 'required',
         ]);
+           $list = [...$validated, 'priority' => 1, 'status' => 1, 'assigned_to' => null ];
 
-        Lists::create($validated);
+//           dd($list);
+        Lists::create($list);
 
     return redirect()->route('lists.index')->with('success', 'List created successfully');
 }

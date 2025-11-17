@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Lists extends Model
 {
     protected $table = 'lists';
-    protected $fillable = ['name', 'category'];
+    protected $guarded = [];
 
 
-    //will implement the below when lists are set up
-//    public function tasks()
-//    {
-//        return $this->HasMany(task::class);
-//    }
+    public function tasks()
+    {
+        return $this->HasMany(tasks::class);
+    }
 
 
 }
