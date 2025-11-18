@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('list_id');
+            $table->foreign('list_id')->references('id')->on('lists')->onDelete('cascade');
+
             $table->string('name');
             $table->string('category');
             $table->string('description');

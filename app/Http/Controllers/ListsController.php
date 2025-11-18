@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Lists;
 
-class ListsController extends Controller
+class  ListsController extends Controller
 {
     public function index(Request $request)
     {
@@ -38,7 +38,7 @@ class ListsController extends Controller
         ]);
            $list = [...$validated, 'priority' => 1, 'status' => 1, 'assigned_to' => null ];
 
-//           dd($list);
+
         Lists::create($list);
 
     return redirect()->route('lists.index')->with('success', 'List created successfully');
@@ -46,8 +46,8 @@ class ListsController extends Controller
 
     public function edit(Lists $list)
     {
-        $list = lists::findOrFail($list);
         return view('lists.edit', compact('list'));
+
     }
 
     public function show($id)
@@ -65,8 +65,7 @@ class ListsController extends Controller
         ]);
 
         $list = lists::findOrFail($id);
-        $list->update($request->only(['name', 'category']));
-
+        $list->update($request->only(['name','category', 'description', 'assigned_to', 'status', 'priority']));
         return redirect()->route('lists.index')->with('success', 'List updated successfully');
     }
 

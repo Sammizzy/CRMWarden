@@ -40,5 +40,55 @@
             </body>
             </html>
 
+    <form action="{{ route('tasks.index')}}" method="POST">
+        @csrf
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="mb-3">
+            <label>Name:</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Category:</label>
+            <input type="text"  name="category" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Description:</label>
+            <input type="text" name="description"  class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>status:</label>
+            <input type="text" name="status"  class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>priority:</label>
+            <input type="text" name="priority"  class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Assigned to:</label>
+            <input type="text" name="assigned_to"  class="form-control" required>
+        </div>
+
+        <button class="btn btn-primary" >Submit</button>
+
+    </form>
+
+
+
+
 </x-layout>
 

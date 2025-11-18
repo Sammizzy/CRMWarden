@@ -1,6 +1,5 @@
 <x-layout>
-
-            <!DOCTYPE html>
+<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
@@ -40,35 +39,56 @@
             </body>
             </html>
 
-    <form>
-        @section('content')
-            <h2>Edit Lists</h2>
-
-            <form action="{{ route('lists.update', $lists->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-
-                <div class="mb-3">
-                    <label>Name:</label>
-                    <input type="text" value="{{ $lists->name }}" class="form-control" disabled>
-                </div>
-
-                <div class="mb-3">
-                    <label>Category:</label>
-                    <input type="text" value="{{ $lists->category }}" class="form-control" disabled>
-                </div>
-
-                <div class="mb-3">
-                    <label>Description:</label>
-                    <input type="text" value="{{ $lists->description }}" class="form-control" disabled>
-                </div>
 
 
-                <button class="btn btn-primary">Update</button>
-            </form>
-        @endsection
+        <h2>Edit List</h2>
 
-    </form>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-</x-layout>
+        <form action="{{ route('lists.update', $list->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="mb-3">
+                <label>Name:</label>
+                <input type="text" name="name" value="{{ old('name', $list->name) }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Category:</label>
+                <input type="text" name="category" value="{{ old('category', $list->category) }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Description:</label>
+                <input type="text" name="description" value="{{ old('description', $list->description) }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Priority:</label>
+                <input type="text" name="priority" value="{{ old('priority', $list->priority) }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Status:</label>
+                <input type="text" name="status" value="{{ old('status', $list->status) }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Assigned to:</label>
+                <input type="text" name="assigned_to" value="{{ old('assigned_to', $list->assigned_to) }}" class="form-control">
+            </div>
+
+            <button class="btn btn-primary">Update</button>
+        </form>
+
+    </x-layout>
 

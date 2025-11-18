@@ -12,7 +12,7 @@ class Lists extends Model
 
     public function tasks()
     {
-        return $this->HasMany(tasks::class);
+        return $this->HasMany(tasks::class, 'list_id');
     }
 
 

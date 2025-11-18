@@ -21,10 +21,10 @@ class TasksController extends Controller
         return view ('tasks.index', ['tasks' => $tasks]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $tasks = tasks::all();
-        return view ('tasks.create');
+        $list_id = $request->list_id;
+        return view('tasks.create', compact('list_id'));
     }
 
     public function store(Request $request)
