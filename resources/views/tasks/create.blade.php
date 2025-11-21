@@ -40,6 +40,19 @@
             </body>
             </html>
 
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar flex-shrink-0">
+            <h3 class="mb-4">WardenCRM</h3>
+            <nav>
+                <a href="{{route('home') }}">Dashboard</a>
+                <a href="{{route ('tasks.index')}}">My tasks</a>
+                <a href="{{route ('lists.index') }}">My lists</a>
+                <a href="{{route('logout') }}">Logout</a>
+            </nav>
+        </div>
+
+
     <form action="{{ route('tasks.index')}}" method="POST">
         @csrf
 
@@ -82,6 +95,8 @@
             <label>Assigned to:</label>
             <input type="text" name="assigned_to"  class="form-control" required>
         </div>
+
+            <input value="{{$list_id}}" type="hidden" name="list_id"  class="form-control" required>
 
         <button class="btn btn-primary" >Submit</button>
 

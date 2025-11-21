@@ -40,7 +40,25 @@
             </body>
             </html>
 
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar flex-shrink-0">
+            <h3 class="mb-4">WardenCRM</h3>
+            <nav>
+                <a href="{{ route('profile') }}">Profile</a>
+                <a href="{{ route('logout') }}">Logout</a>
 
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="main flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Welcome, {{ Auth::user()->username }}</h2>
+                <span class="text-muted">{{ now()->format('F j, Y') }}</span>
+            </div>
+        </div>
+    </div>
 
 
 </x-layout>

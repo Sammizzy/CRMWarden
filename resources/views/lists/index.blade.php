@@ -38,13 +38,30 @@
 </head>
 <body>
 
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar flex-shrink-0">
+        <h3 class="mb-4">WardenCRM</h3>
+        <nav>
+            <a href="{{route('home') }}">Dashboard</a>
+            <a href="{{route ('tasks.index')}}">My tasks</a>
+            <a href="{{route ('lists.index') }}">My lists</a>
+            <a href="{{route('logout') }}" class="">Logout</a>
+        </nav>
+    </div>
+
+    <!-- Main content -->
+    <div class="main flex-grow-1">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Welcome, {{ Auth::user()->username }}</h2>
+            <span class="text-muted">{{ now()->format('F j, Y') }}</span>
+        </div>
 
 
 <h2 class="mb-4">Lists</h2>
 
 
 <div class="mb-3">
-    <a href="{{ route('profile') }}" class="btn btn-secondary">Profile</a>
     <a href="{{ route('lists.create') }}" class="btn btn-success">Create New List</a>
 </div>
 

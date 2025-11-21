@@ -40,7 +40,28 @@
             </body>
             </html>
 
-        <h2 class="mb-4">List: {{ $list->name }}</h2>
+
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar flex-shrink-0">
+            <h3 class="mb-4">WardenCRM</h3>
+            <nav>
+                <a href="{{route('home') }}">Dashboard</a>
+                <a href="{{route ('tasks.index')}}">My tasks</a>
+                <a href="{{route ('lists.index') }}">My lists</a>
+                <a href="{{route('logout') }}">Logout</a>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="main flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+{{--                <h2>Welcome, {{ Auth::user()->username }}</h2>--}}
+                <span class="text-muted">{{ now()->format('F j, Y') }}</span>
+            </div>
+
+
+        <h2 class="mb-4">{{ $list->name }}</h2>
 
         {{-- List summary --}}
         <div class="card p-3 mb-4 shadow-sm">
@@ -62,7 +83,7 @@
         @if($list->tasks->isEmpty())
             <p>No tasks yet for this list.</p>
         @else
-            <table class="table">
+                <table class="table">
                 <thead>
                 <tr>
                     <th>Task</th>
@@ -75,10 +96,9 @@
                 <tbody>
                 @foreach($list->tasks as $task)
                     <tr>
-                        <td>{{ $task->title }}</td>
+                        <td>{{ $task->name }}</td>
                         <td>{{ $task->status }}</td>
                         <td>{{ $task->assigned_to }}</td>
-
                         <td>
                             <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
@@ -99,4 +119,3 @@
 
 
 
-<

@@ -31,11 +31,20 @@ class TasksController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
+            'category' => 'required',
+            'priority' => 'required',
+            'status' => 'required',
+            'assigned_to' => 'required',
+            'description' => 'required',
+            'list_id' => ''
+
         ]);
 
-        tasks::create($validated);
+                $task = [...$validated ];
+                  tasks::create($task);
 
-        return redirect()->route('tasks.index')->with('success', 'Task created successfully');
+
+        return redirect()->route('lists.index')->with('success', 'Task created successfully');
     }
 
     public function edit(tasks $tasks)
