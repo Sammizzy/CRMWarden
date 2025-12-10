@@ -40,5 +40,56 @@
             </body>
             </html>
 
+    <h2>Edit Task</h2>
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div class="mb-3">
+            <label>Name:</label>
+            <input type="text" name="name" value="{{ old('name', $task->name) }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Category:</label>
+            <input type="text" name="category" value="{{ old('category', $task->category) }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Description:</label>
+            <input type="text" name="description" value="{{ old('description', $task->description) }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Priority:</label>
+            <input type="text" name="priority" value="{{ old('priority', $task->priority) }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Status:</label>
+            <input type="text" name="status" value="{{ old('status', $task->status) }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Assigned to:</label>
+            <input type="text" name="assigned_to" value="{{ old('assigned_to', $task->assigned_to) }}" class="form-control">
+        </div>
+
+        <button class="btn btn-primary">Update</button>
+    </form>
+
+
+
 </x-layout>
 

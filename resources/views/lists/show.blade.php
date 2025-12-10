@@ -78,43 +78,74 @@
 
         <hr>
 
-        <h3>Tasks for this List</h3>
-
-        @if($list->tasks->isEmpty())
-            <p>No tasks yet for this list.</p>
-        @else
+            <h3>WIP Tasks</h3>
+            @if($list->tasks->where('status', '!=', 'Completed')->isEmpty())
+                <p>No tasks in progress.</p>
+            @else
                 <table class="table">
-                <thead>
-                <tr>
-                    <th>Task</th>
-                    <th>Status</th>
-                    <th>Assigned</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                @foreach($list->tasks as $task)
+                    <thead>
                     <tr>
-                        <td>{{ $task->name }}</td>
-                        <td>{{ $task->status }}</td>
-                        <td>{{ $task->assigned_to }}</td>
-                        <td>
-                            <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this task?')">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
+                        <th>Task</th>
+                        <th>Status</th>
+                        <th>Assigned</th>
+                        <th>Actions</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
-        @endif
+                    </thead>
+                    <tbody>
+                    @foreach($list->tasks->where('status', '!=', 'Completed') as $task)
+                        <tr>
+                            <td>{{ $task->name }}</td>
+                            <td>{{ $task->status }}</td>
+                            <td>{{ $task->assigned_to }}</td>
+                            <td>
+                                <a href="{{ route('tasks.complete', $task->id) }}" class="btn btn-success btn-sm">Complete</a>
+                                <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            @endif
+
+            <hr>
+
+            <h3>Completed Tasks</h3>
+            @if($list->tasks->where('status', 'Completed')->isEmpty())
+                <p>No completed tasks.</p>
+            @else
+                <table class="table table-success">
+                    <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Status</th>
+                        <th>Assigned</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($list->tasks->where('status', 'Completed') as $task)
+                        <tr>
+                            <td>{{ $task->name }}</td>
+                            <td>{{ $task->status }}</td>
+                            <td>{{ $task->assigned_to }}</td>
+                            <td>
+                                <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+    @endif
     </x-layout>
 
 

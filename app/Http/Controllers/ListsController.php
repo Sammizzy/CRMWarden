@@ -36,13 +36,13 @@ class  ListsController extends Controller
             'category' => 'required',
             'description' => 'required',
         ]);
-           $list = [...$validated, 'priority' => 1, 'status' => 1, 'assigned_to' => null ];
+        $list = [...$validated, 'priority' => 1, 'status' => 1, 'assigned_to' => null ];
 
 
         Lists::create($list);
 
-    return redirect()->route('lists.index')->with('success', 'List created successfully');
-}
+        return redirect()->route('lists.index')->with('success', 'List created successfully');
+    }
 
     public function edit(Lists $list)
     {
@@ -53,8 +53,8 @@ class  ListsController extends Controller
     public function show($id)
     {
         $list = lists::findOrFail($id);
-    return view('lists.show', compact('list'));
-}
+        return view('lists.show', compact('list'));
+    }
 
 
     public function update(Request $request, $id)
@@ -72,10 +72,10 @@ class  ListsController extends Controller
     public function destroy($id)
     {
         $list = Lists::findOrFail($id);
-    $list->delete();
+        $list->delete();
 
-    return redirect()->route('lists.index')->with('success', 'List deleted successfully');
-}
+        return redirect()->route('lists.index')->with('success', 'List deleted successfully');
+    }
 
 
 

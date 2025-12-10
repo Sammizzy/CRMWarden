@@ -12,14 +12,14 @@ class TasksController extends Controller
         $query = tasks::query();
 
         if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         $tasks = $query->orderBy('name')->get();
 
-        return view ('tasks.index', ['tasks' => $tasks]);
+        return view('tasks.index', compact('tasks'));
     }
+
 
     public function create(Request $request)
     {
@@ -27,60 +27,79 @@ class TasksController extends Controller
         return view('tasks.create', compact('list_id'));
     }
 
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'category' => 'required',
-            'priority' => 'required',
-            'status' => 'required',
+            'name'        => 'required',
+            'category'    => 'required',
+            'priority'    => 'required',
+            'status'      => 'required',
             'assigned_to' => 'required',
             'description' => 'required',
-            'list_id' => ''
-
+            'list_id'     => 'required|exists:lists,id'
         ]);
 
-                $task = [...$validated ];
-                  tasks::create($task);
+        tasks::create($validated);
 
-
-        return redirect()->route('lists.index')->with('success', 'Task created successfully');
+        return redirect()
+            ->route('lists.show', $validated['list_id'])
+            ->with('success', 'Task created successfully');
     }
 
-    public function edit(tasks $tasks)
+
+    public function edit(tasks $task)
     {
-        $tasks = tasks::findOrFail($tasks);
-        return view('tasks.edit', compact('tasks'));
+        return view('tasks.edit', compact('task'));
     }
 
-    public function show($id)
+
+    public function complete(tasks $task)
     {
-        $task = tasks::findOrFail($id);
+        $task->update([
+            'color'  => 'green',
+            'status' => 'Completed',
+        ]);
+
+        return redirect()
+            ->route('tasks.show', $task->id)
+            ->with('success', 'Task marked as complete!');
+    }
+
+
+    public function show(tasks $task)
+    {
+
         return view('tasks.show', compact('task'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, tasks $task)
     {
-        $request->validate([
-            'name' => 'required',
-            'category' => 'required',
-            'priority' => 'required',
-            'status' => 'required',
+        $validated = $request->validate([
+            'name'        => 'required',
+            'category'    => 'required',
+            'description' => 'required',
+            'priority'    => 'required',
+            'status'      => 'required',
             'assigned_to' => 'required',
         ]);
 
-        $task = tasks::findOrFail($id);
-        $task->update($request->only(['name', 'category', 'priority', 'status', 'assigned_to']));
+        $task->update($validated);
 
-        return redirect()->route('tasks.index')->with('success', 'List updated successfully');
+        return redirect()
+            ->route('tasks.show', $task->id)
+            ->with('success', 'Task updated successfully');
     }
 
-    public function destroy($id)
+
+    public function destroy(tasks $task)
     {
-        $task = tasks::findOrFail($id);
+        $listId = $task->list_id;
         $task->delete();
 
-        return redirect()->route('tasks.index')->with('success', 'List deleted successfully');
+        return redirect()
+            ->route('lists.show', $listId)
+            ->with('success', 'Task deleted successfully');
     }
 }

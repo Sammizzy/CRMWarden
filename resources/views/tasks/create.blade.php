@@ -53,7 +53,7 @@
         </div>
 
 
-    <form action="{{ route('tasks.index')}}" method="POST">
+    <form action="{{ route('tasks.store')}}" method="POST">
         @csrf
 
         @if ($errors->any())
@@ -65,6 +65,8 @@
                 </ul>
             </div>
         @endif
+
+        <input type="hidden" name="list_id" value="{{ $list_id }}">
 
         <div class="mb-3">
             <label>Name:</label>

@@ -9,8 +9,6 @@ use App\Http\Controllers\TasksController;
 use Illuminate\Support\Facades\Route;
 
 
-// Import the controllers
-
 
 // Default Route
 Route::get('/', [LoginController::class, 'showLoginForm']);
@@ -47,6 +45,7 @@ Route::get('/tasks/create', [TasksController::class, 'create'])->name('tasks.cre
 Route::post('/tasks', [TasksController::class, 'store'])->name('tasks.store');
 Route::get('/tasks/{task}', [TasksController::class, 'show'])->name('tasks.show');
 Route::get('/tasks/{task}/edit', [TasksController::class, 'edit'])->name('tasks.edit');
+Route::get('/tasks/{task}/complete', [TasksController::class, 'complete'])->name('tasks.complete');
 Route::put('/tasks/{task}', [TasksController::class, 'update'])->name('tasks.update');
 Route::delete('/tasks/{task}', [TasksController::class, 'destroy'])->name('tasks.destroy');
 
