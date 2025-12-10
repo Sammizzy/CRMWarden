@@ -62,7 +62,7 @@
 
             <h2>Create List</h2>
 
-            <form action="{{ route('lists.index')}}" method="POST">
+            <form action="{{ route('lists.store')}}" method="POST">
                 @csrf
 
                 @if ($errors->any())
@@ -89,7 +89,6 @@
                     <label>Description:</label>
                     <input type="text" name="description"  class="form-control" required>
                 </div>
-
 
                 <button class="btn btn-primary" >Submit</button>
 

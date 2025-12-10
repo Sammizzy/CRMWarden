@@ -68,6 +68,9 @@
                 <p><strong>Priority:</strong> {{ $task->priority }}</p>
                 <p><strong>Status:</strong> {{ $task->status }}</p>
                 <p><strong>Assigned To:</strong> {{ $task->assigned_to }}</p>
+
+{{--        Unsure whether to keep below as a feature, maybe as a hidden        --}}
+
 {{--                <p><strong>Part of List:</strong>--}}
 {{--                    @if ($task->list)--}}
 {{--                        <a href="{{ route('lists.show', $task->list->id) }}">--}}
@@ -80,7 +83,7 @@
 
 
 
-            <!-- Quick actions -->
+            <!-- buttons for each task -->
             <div class="mb-4">
                 <a href="{{ route('tasks.complete', $task->id) }}" class="btn btn-success btn-sm">
                     Mark as Complete

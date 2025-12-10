@@ -43,58 +43,68 @@
         <div class="sidebar flex-shrink-0">
             <h3 class="mb-4">WardenCRM</h3>
             <nav>
-                <a href="{{route('home') }}">Dashboard</a>
-                <a href="{{route ('tasks.index')}}">My tasks</a>
-                <a href="{{route ('lists.index') }}">My lists</a>
-                <a href="{{route('logout') }}">Logout</a>
+                <a href="{{ route('home') }}">Dashboard</a>
+                <a href="{{ route('tasks.index') }}">My tasks</a>
+                <a href="{{ route('lists.index') }}">My lists</a>
+                <a href="{{ route('logout') }}">Logout</a>
             </nav>
         </div>
 
         <!-- Main content -->
         <div class="main flex-grow-1">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Welcome, {{ Auth::user()->username }} this is your profile page</h2>
+                <h2>Welcome, {{ auth()->user()->username }}</h2>
                 <span class="text-muted">{{ now()->format('F j, Y') }}</span>
             </div>
 
-            <div class="mt-5">
-                <h4>Recent Activity</h4>
-                <table class="table table-hover mt-3">
-                    <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th>Assigned To</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>Follow up with client</td>
-                        <td>John Doe</td>
-                        <td><span class="badge bg-warning">Pending</span></td>
-                        <td>Oct 20, 2025</td>
-                    </tr>
-                    <tr>
-                        <td>Website redesign</td>
-                        <td>Jane Smith</td>
-                        <td><span class="badge bg-success">Completed</span></td>
-                        <td>Oct 10, 2025</td>
-                    </tr>
-                    <tr>
-                        <td>CRM data cleanup</td>
-                        <td>Emily Johnson</td>
-                        <td><span class="badge bg-primary">In Progress</span></td>
-                        <td>Oct 18, 2025</td>
-                    </tr>
-                    </tbody>
-                </table>
+
+                @forelse($lists as $list)
+                    <h3 class="card p-3 mb-4 shadow-sm">{{ $list->name }}</h3>
+                    <p><strong>Category:</strong> {{ $list->category }}</p>
+                    <p><strong>Description:</strong> {{ $list->description }}</p>
+
+                    {{-- WIP Tasks --}}
+                    <h5 class="mt-3">WIP Tasks</h5>
+                    @php
+                        $wipTasks = $list->tasks->where('status', '!=', 'Completed');
+                    @endphp
+
+                    @if($wipTasks->isEmpty())
+                        <p>No WIP tasks.</p>
+                    @else
+                        <ul class="list-group mb-3">
+                            @foreach($wipTasks as $task)
+                                <li class="list-group-item">
+                                    {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
+                                    <span class="badge bg-warning float-end">{{ $task->status }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+
+                    {{-- Completed Tasks --}}
+                    <h5>Completed Tasks</h5>
+                    @php
+                        $completedTasks = $list->tasks->where('status', 'Completed');
+                    @endphp
+
+                    @if($completedTasks->isEmpty())
+                        <p>No completed tasks.</p>
+                    @else
+                        <ul class="list-group mb-4">
+                            @foreach($completedTasks as $task)
+                                <li class="list-group-item" style="background-color: #d4edda;">
+                                    {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
+                                    <span class="badge bg-success float-end">{{ $task->status }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                @empty
+                    <p>You have no lists yet.</p>
+                @endforelse
             </div>
-
-
-
         </div>
-    </div>
 
     </body>
     </html>

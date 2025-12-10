@@ -36,18 +36,20 @@ class  ListsController extends Controller
             'category' => 'required',
             'description' => 'required',
         ]);
-        $list = [...$validated, 'priority' => 1, 'status' => 1, 'assigned_to' => null ];
-
-
-        Lists::create($list);
-
+        $listData = array_merge($validated, [
+            'user_id'     => auth()->id(),
+            'priority'    => 1,
+            'status'      => 'WIP',
+            'assigned_to' => null,
+        ]);
+        Lists::create($listData);
         return redirect()->route('lists.index')->with('success', 'List created successfully');
     }
+
 
     public function edit(Lists $list)
     {
         return view('lists.edit', compact('list'));
-
     }
 
     public function show($id)

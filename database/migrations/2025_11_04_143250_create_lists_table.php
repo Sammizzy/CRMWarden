@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('lists', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->after('id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('category');
             $table->string('description');
-            $table->integer('priority');
-            $table->string('status');
+            $table->integer('priority')->default(1);
+            $table->string('status')->default('WIP');
             $table->string('assigned_to') ->nullable();
             $table->timestamps();
         });
 
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('lists');
