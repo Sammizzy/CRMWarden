@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('list_id')->references('id')->on('lists')->onDelete('set null');
 
             $table->string('name');
-            $table->string('category');
+            $table->foreignId('category')->nullable()->constrained()-nullOnDelete();
             $table->string('description');
             $table->string('status');
             $table->string('priority');

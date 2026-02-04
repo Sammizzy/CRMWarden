@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->after('id')->constrained('users')->cascadeOnDelete();
             $table->string('name');
-            $table->string('category');
+            $table->foreignId('category')->nullable()->constrained()-nullOnDelete();
             $table->string('description');
             $table->integer('priority')->default(1);
             $table->string('status')->default('WIP');

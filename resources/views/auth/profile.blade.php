@@ -58,54 +58,66 @@
             </div>
 
 
-                @forelse($lists as $list)
-                    <h3 class="card p-3 mb-4 shadow-sm">{{ $list->name }}</h3>
-                    <p><strong>Category:</strong> {{ $list->category }}</p>
-                    <p><strong>Description:</strong> {{ $list->description }}</p>
+            @forelse($lists as $list)
+                <h3 class="card p-3 mb-4 shadow-sm">{{ $list->name }}</h3>
+                <p><strong>Category:</strong> {{ $list->category }}</p>
+                <p><strong>Description:</strong> {{ $list->description }}</p>
 
-                    {{-- WIP Tasks --}}
-                    <h5 class="mt-3">WIP Tasks</h5>
-                    @php
-                        $wipTasks = $list->tasks->where('status', '!=', 'Completed');
-                    @endphp
+                {{-- WIP Tasks --}}
+                <h5 class="mt-3">WIP Tasks</h5>
+                @php
+                    $wipTasks = $list->tasks->where('status', '!=', 'Completed');
+                @endphp
 
-                    @if($wipTasks->isEmpty())
-                        <p>No WIP tasks.</p>
-                    @else
-                        <ul class="list-group mb-3">
-                            @foreach($wipTasks as $task)
-                                <li class="list-group-item">
-                                    {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
-                                    <span class="badge bg-warning float-end">{{ $task->status }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
+                @if($wipTasks->isEmpty())
+                    <p>No WIP tasks.</p>
+                @else
+                    <ul class="list-group mb-3">
+                        @foreach($wipTasks as $task)
+                            <li class="list-group-item">
+                                {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
+                                <span class="badge bg-warning float-end">{{ $task->status }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
 
-                    {{-- Completed Tasks --}}
-                    <h5>Completed Tasks</h5>
-                    @php
-                        $completedTasks = $list->tasks->where('status', 'Completed');
-                    @endphp
+                {{-- Completed Tasks --}}
+                <h5>Completed Tasks</h5>
+                @php
+                    $completedTasks = $list->tasks->where('status', 'Completed');
+                @endphp
 
-                    @if($completedTasks->isEmpty())
-                        <p>No completed tasks.</p>
-                    @else
-                        <ul class="list-group mb-4">
-                            @foreach($completedTasks as $task)
-                                <li class="list-group-item" style="background-color: #d4edda;">
-                                    {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
-                                    <span class="badge bg-success float-end">{{ $task->status }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                @empty
-                    <p>You have no lists yet.</p>
-                @endforelse
-            </div>
+
+                @if($completedTasks->isEmpty())
+                    <p>No completed tasks.</p>
+                @else
+                    <ul class="list-group mb-4">
+                        @foreach($completedTasks as $task)
+                            <li class="list-group-item" style="background-color: #d4edda;">
+                                {{ $task->name }} — Assigned to: {{ $task->assigned_to ?? 'Unassigned' }}
+                                <span class="badge bg-success float-end">{{ $task->status }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                {{--edit/delete buttons--}}
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('lists.edit', $list->id) }}" class="btn btn-warning btn-sm w-25 me-1">Edit</a>
+                    <form action="{{ route('lists.destroy', $list->id) }}" method="POST" class="w-25 ms-1">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger btn-sm w-100" onclick="return confirm('Delete this list?')">Delete</button>
+                    </form>
+                </div>
+
+            @empty
+                <p>You have no lists yet.</p>
+            @endforelse
+
         </div>
-
+    </div>
     </body>
     </html>
 

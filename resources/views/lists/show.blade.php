@@ -73,7 +73,7 @@
                 <p><strong>Assigned To:</strong> {{ $list->assigned_to ?? 'Unassigned' }}</p>
             </div>
 
-            <a href="{{ route('tasks.create', ['list_id' => $list->id]) }}" class="btn btn-success mb-3">
+            <a href="{{ route('tasks.create', $list->id) }}" class="btn btn-success mb-3">
                 + Create Task for this List
             </a>
 

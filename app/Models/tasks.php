@@ -15,5 +15,10 @@ class tasks extends Model
         return $this->belongsTo(lists::class, 'list_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 
 }

@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\tasks;
 use Illuminate\Http\Request;
+use App\Models\Tasks;
+use App\Models\Category;
+use App\Models\Lists;
 
 class TasksController extends Controller
 {
+    /**
+     * Display all tasks
+     */
     public function index(Request $request)
     {
-        $query = tasks::query();
+        $query = Tasks::query();
 
         if ($request->has('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -20,86 +25,141 @@ class TasksController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
-
-    public function create(Request $request)
+    /**
+     * Show the form to create a new task
+     */
+    public function create(Lists $list)
     {
-        $list_id = $request->list_id;
-        return view('tasks.create', compact('list_id'));
+        $categories = Category::where('user_id', auth()->id())
+            ->orderBy('name')
+            ->get();
+
+        return view('tasks.create', [
+            'categories' => $categories,
+            'list_id'    => $list->id,
+        ]);
     }
 
-
+    /**
+     * Store a new task
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'        => 'required',
-            'category'    => 'required',
-            'priority'    => 'required',
-            'status'      => 'required',
-            'assigned_to' => 'required',
-            'description' => 'required',
-            'list_id'     => 'required|exists:lists,id'
+            'name'         => 'required|string|max:255',
+            'description'  => 'required|string|max:1000',
+            'priority'     => 'required|integer',
+            'status'       => 'required|string|max:255',
+            'assigned_to'  => 'required|string|max:255',
+            'category_id'  => 'nullable', // either existing or new
+            'new_category' => 'nullable|string|max:255',
+            'list_id'      => 'required|exists:lists,id',
         ]);
 
-        tasks::create($validated);
+        // Handle new category creation
+        if ($request->category_id === 'new' && $request->new_category) {
+            $category = Category::firstOrCreate([
+                'name'    => $request->new_category,
+                'user_id' => auth()->id(),
+            ]);
+        } else {
+            $category = Category::find($request->category_id);
+        }
 
-        return redirect()
-            ->route('lists.show', $validated['list_id'])
-            ->with('success', 'Task created successfully');
-    }
-
-
-    public function edit(tasks $task)
-    {
-        return view('tasks.edit', compact('task'));
-    }
-
-
-    public function complete(tasks $task)
-    {
-        $task->update([
-            'color'  => 'green',
-            'status' => 'Completed',
+        Tasks::create([
+            'name'        => $validated['name'],
+            'description' => $validated['description'],
+            'priority'    => $validated['priority'],
+            'status'      => $validated['status'],
+            'assigned_to' => $validated['assigned_to'],
+            'list_id'     => $validated['list_id'],
+            'category_id' => $category?->id, // nullable safe
         ]);
 
-        return redirect()
-            ->route('tasks.show', $task->id)
-            ->with('success', 'Task marked as complete!');
+        return redirect()->route('lists.show', $validated['list_id'])
+            ->with('success', 'Task created successfully.');
     }
 
-
-    public function show(tasks $task)
+    /**
+     * Show form to edit task
+     */
+    public function edit(Tasks $task)
     {
+        $categories = Category::where('user_id', auth()->id())
+            ->orderBy('name')
+            ->get();
 
-        return view('tasks.show', compact('task'));
+        return view('tasks.edit', compact('task', 'categories'));
     }
 
-
-    public function update(Request $request, tasks $task)
+    /**
+     * Update a task
+     */
+    public function update(Request $request, Tasks $task)
     {
         $validated = $request->validate([
-            'name'        => 'required',
-            'category'    => 'required',
-            'description' => 'required',
-            'priority'    => 'required',
-            'status'      => 'required',
-            'assigned_to' => 'required',
+            'name'         => 'required|string|max:255',
+            'description'  => 'required|string|max:1000',
+            'priority'     => 'required|integer',
+            'status'       => 'required|string|max:255',
+            'assigned_to'  => 'required|string|max:255',
+            'category_id'  => 'nullable',
+            'new_category' => 'nullable|string|max:255',
         ]);
 
-        $task->update($validated);
+        // Handle category
+        if ($request->category_id === 'new' && $request->new_category) {
+            $category = Category::firstOrCreate([
+                'name'    => $request->new_category,
+                'user_id' => auth()->id(),
+            ]);
+        } else {
+            $category = Category::find($request->category_id);
+        }
 
-        return redirect()
-            ->route('tasks.show', $task->id)
-            ->with('success', 'Task updated successfully');
+        $task->update([
+            'name'        => $validated['name'],
+            'description' => $validated['description'],
+            'priority'    => $validated['priority'],
+            'status'      => $validated['status'],
+            'assigned_to' => $validated['assigned_to'],
+            'category_id' => $category?->id,
+        ]);
+
+        return redirect()->route('tasks.show', $task->id)
+            ->with('success', 'Task updated successfully.');
     }
 
-
-    public function destroy(tasks $task)
+    /**
+     * Delete a task
+     */
+    public function destroy(Tasks $task)
     {
         $listId = $task->list_id;
         $task->delete();
 
-        return redirect()
-            ->route('lists.show', $listId)
-            ->with('success', 'Task deleted successfully');
+        return redirect()->route('lists.show', $listId)
+            ->with('success', 'Task deleted successfully.');
+    }
+
+    /**
+     * Show single task
+     */
+    public function show(Tasks $task)
+    {
+        return view('tasks.show', compact('task'));
+    }
+
+    /**
+     * Mark a task as completed
+     */
+    public function complete(Tasks $task)
+    {
+        $task->update([
+            'status' => 'Completed',
+        ]);
+
+        return redirect()->route('tasks.show', $task->id)
+            ->with('success', 'Task marked as complete!');
     }
 }
